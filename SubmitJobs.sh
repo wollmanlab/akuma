@@ -53,17 +53,17 @@ thisFolder = drive.CreateFile({'title':outputFolderName,\"mimeType\":\"applicati
 thisFolder.Upload()
 "
 MULTILINE="
-sudo chown ${USER} SingleCellFitting;
-chmod 755 SingleCellFitting;
-cp index /home/${USER}/SingleCellFitting;
-cp ${SIM} /home/${USER}/SingleCellFitting;
-cp ${DATA} /home/${USER}/SingleCellFitting;
-cp ${SCORE} /home/${USER}/SingleCellFitting;
-cp ${XML} /home/${USER}/SingleCellFitting;
-cp ${TIME} /home/${USER}/SingleCellFitting;
-cp ${INPUT} /home/${USER}/SingleCellFitting;
-cp client_secrets.json /home/${USER}/SingleCellFitting;
-cd /home/${USER}/SingleCellFitting;
+sudo chown ${USER} akuma;
+chmod 755 akuma;
+cp index /home/${USER}/akuma;
+cp ${SIM} /home/${USER}/akuma;
+cp ${DATA} /home/${USER}/akuma;
+cp ${SCORE} /home/${USER}/akuma;
+cp ${XML} /home/${USER}/akuma;
+cp ${TIME} /home/${USER}/akuma;
+cp ${INPUT} /home/${USER}/akuma;
+cp client_secrets.json /home/${USER}/akuma;
+cd /home/${USER}/akuma;
 sudo /home/${USER}/anaconda2/bin/python ReadInputAndRunABCSMC.py ${INPUT};
 "
 echo "Authentication Needed"
@@ -79,19 +79,19 @@ bash Anaconda2-4.2.0-Linux-x86_64.sh -b -p /home/${USER}/anaconda2
 echo "export PATH=/home/${USER}/anaconda2/bin:\$PATH">>/home/${USER}/.bashrc
 y | sudo /home/${USER}/anaconda2/bin/conda install -c sys-bio roadrunner
 sudo apt-get -y install git 
-git clone https://github.com/jasoncyao/SingleCellFitting.git
+git clone https://github.com/wollmanlab/akuma.git
 sudo /home/${USER}/anaconda2/bin/pip install PyDrive
-sudo chown ${USER} SingleCellFitting
-chmod 755 SingleCellFitting
-cp index /home/${USER}/SingleCellFitting
-cp ${SIM} /home/${USER}/SingleCellFitting
-cp ${DATA} /home/${USER}/SingleCellFitting
-cp ${SCORE} /home/${USER}/SingleCellFitting
-cp ${XML} /home/${USER}/SingleCellFitting
-cp ${TIME} /home/${USER}/SingleCellFitting
-cp ${INPUT} /home/${USER}/SingleCellFitting
-cp client_secrets.json /home/${USER}/SingleCellFitting
-cd /home/${USER}/SingleCellFitting
+sudo chown ${USER} akuma
+chmod 755 akuma
+cp index /home/${USER}/akuma
+cp ${SIM} /home/${USER}/akuma
+cp ${DATA} /home/${USER}/akuma
+cp ${SCORE} /home/${USER}/akuma
+cp ${XML} /home/${USER}/akuma
+cp ${TIME} /home/${USER}/akuma
+cp ${INPUT} /home/${USER}/akuma
+cp client_secrets.json /home/${USER}/akuma
+cd /home/${USER}/akuma
 sudo /home/${USER}/anaconda2/bin/python ReadInputAndRunABCSMC.py ${INPUT}
 EOF
 chmod +x StartupInstall.sh
