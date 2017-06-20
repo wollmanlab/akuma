@@ -1,0 +1,62 @@
+# Files needed to be in the directory 
+# dataMat is the data matrix to be fitted 
+dataMat = "dataMatCentralDogma.p"
+# simIDList is the list of instance ID's 
+simIDList = "simIDListCentralDogma.p"
+# score threshold list
+thresholdList = "scoreThresholdListCentralDogma.p"
+timePoints = "timePointsCentralDogma.p"
+
+# modelFile 
+modelFile = "CentralDogma.xml"
+
+# Information for list of kinetic parameters to be optimized, list of state variables subject under constraints and the name of the observable
+paramList = ['betaM','alphaM','beta','alpha']
+varList = ['RNA','p'] 
+observableName = ['p']
+
+
+varInitVals = [0,0]
+
+# Objective Constraints
+varsBoundList = [[0,250],[0,150]]
+
+# The ID to be maped to the data matrix, the reference vectors from which to draw parameter range, and the order of parameter span
+referenceVec = [100,0.5,0.1,0.2]
+order = 2
+
+# need to generate priors or take the posteriors from the prevous 
+needToGeneratePrior = True
+
+# Name of the scoring function type to evaluate for the first population 
+scoringPrelim = "SimpleEval"
+
+# Name of the scoring function type used for posterior iteration populations
+scoringFnc = "FncSimpleScore"
+scoringFncParams = {'f1scale': 1, 'f0scale':1}
+scoringOption = 1
+# Name of the prior sampling function type used
+priorSampleFnc = 'SimpleSampleUniform'
+
+# Name of the posterior sampling function type used
+posteriorSampleFnc = 'MultiVariateNormalCovariateSample'
+
+# Name of the first iteration weight calculation function(need to have this if generating priors )
+calculateFirstGenWeightsFnc = 'UniformWeight' 
+
+# Name of the posterior iteration weight calculation function
+calculatePosteriorGenWeightsFnc = 'CalculateWeightMultiVariateNormalDensity'
+
+
+# Sequential Monte Carlo parameters
+firstThreshold = 10000
+popSize = 300
+maxRunTime = 3
+option = 3
+alpha = 0.9
+terminationFraction = 0.8
+covscaling = 1.5
+firstRejectionSamplingTime = 0.7
+
+ 
+

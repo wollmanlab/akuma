@@ -1,0 +1,25 @@
+This tutorial demonstrates how to carry out parameter fitting of the central dogma transcription model 
+The works on a 14.04 Linux of Google Compute Engine
+Prerequisites: 
+1. A working internet browser 
+
+2. Esbalished Google Cloud Project with a Service Account Key associated with the Google Drive
+
+In the home directory,
+Installing Necessary packages thorugh pip:
+1. If pip is not already installed, install pip by executing command "sudo apt-get install python-pip" in the home directory 
+
+2. Install google's Python library to handle OAuth2.0 protocol. 
+Execute the command "sudo pip install --upgrade oauth2client"
+
+3. Install PyDrive, the wrapper library to handle interface with Google Drive API. 
+Execute the command "sudo pip install PyDrive"
+
+4. Install git. Execute the command "sudo apt-get -y install git"
+ 
+5. Clone the git repository. Execute the command "git clone https://github.com/jasoncyao/SingleCellFitting.git"
+
+6. Follow and install and configure gcloud api 
+
+7. cd into the local repository and execute the command to create 1 remote instance for data fitting. 
+Execute the command "SubmitJobs.sh -f inputfile_centraldogma_tutorial -n 1 -i simIDListCentralDogma.p -d dataMatCentralDogma.p -s scoreThresholdListCentralDogma.p -x CentralDogma.xml -t timePointsCentralDogma.p -z us-west1-a"
