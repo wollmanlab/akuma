@@ -554,6 +554,37 @@ class ModelFitting:
         return {'success':success, 'finalSimData':finalSimData,'finalPop':finalPop,'finalScores':finalScores,'totalAttempts':totalAttempts,'finalTime':finalTime,'fileObj':fileObj}
     
     def SequentialMonteCarlo(self,**kwargs):
+        """
+        Perform sequential Monte Carlo algorithm  
+        Input-
+        varLIst = The list of state variables as a list of strings 
+        logfile = The name of the log file
+        paramList = The list of parameter names that need to be optimized. It is a list of strings. 
+        previousGenPop = The parameter vector population for a previously terminated run of sequential Monte Carlo   
+        previousGenWeights = The assigned re-sampling weights for a previously terminated run of sequential Monte Carlo
+        previousGenScores = The goodness of fit scores for a previously terminated run of sequential Monte Carlo 
+        needToGeneratePrior = a boolean flag for whether the algorithm will need to generate a prior population of parameter vectors
+        simID = The numerical ID for this particular FittingData object
+        ODESolveFunc = The name of the function of ODE solver
+        scoreFunc = The name of scoring function between the simulated data and the real data
+        priorSampleFunc = The name of sampling function for the first prior of parameters 
+        posteriorSampleFunc = The name of re-sampling function to produce posteriors for each succession of rejection sampling
+        calculateFirstGenWeight = The name of function to calculate the re-sampling weights for the posterior of first iteration of rejection sampling
+        calculateWeightFunc = The name of function to calculate the re-sampling weights for the posterior of each succession of rejection sampling
+        firstThreshold = The threshold for termination of the first iteration of rejection sampling
+        finalThreshold = The threshold for successful termination of the final iteration of rejection sampling 
+        popSize = The size of the parameter vector population collected for each iteration of rejection sampling 
+        maxRunTime = The time limit on the running of sequential Monte Carlo algorithm 
+        option= Numerical indicator for the choice of termination threshold of sequential Monte Carlo. 1 = using a schedule of epsilon. 2 = using a schedule of alpha fraction. 3 = using a single alpha fraction
+        epsilonSchedule = The schedule of epsilon threshold 
+        alphaSchedule = The schedule of alpha
+        alpha= The fraction for relative threshold. The parameter vector will have to at least score within the top alpha fraction of the prior of the current rejection sampling iteration to be considered as part of the posterior  
+        fEvalPreliminary= The name of the fit evaluation function for the posterior from the first iteration of rejection sampling. The function determines whether the parameter vector will be selected as part of the posterior. 
+        firstRejectionSamplingTime = The time limit for the first rejection sampling 
+        terminationFraction = The fraction of the posterior that has to meet the final termination threshold for the iteration to be the terminating iteration of the sequential Monte Carlo algorithm
+        covscaling = The covariance scaling factor of the re-sampling function 
+        CheckConstraintFunc = The handle of function to check for constraints in simulated data 
+        """
         t0 = datetime.now()
         if 'varList' in kwargs:
             varList = kwargs['varList']
