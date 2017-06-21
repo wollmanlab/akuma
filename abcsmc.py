@@ -450,7 +450,7 @@ class ModelFitting:
     def SetODESolveFunc(self,ODESolveFunc):
         self.ODESolveFunc = ODESolveFunc
     def RejectionSampling(self,ODESolveFunc,fSampleFunc,fAccept,paramList=None,fScore=None,popSize=None,rejectionTime=None,fileObj=None,CheckConstraintFunc=None): 
-    """
+        """
         Perform a single iteration of rejection sampling 
         Input-
         ODESolveFunc: The ode sovler function that takes in a list of parameters and output the dictionary of results and possibly results from simulation towards initial equilibrium     
@@ -462,7 +462,7 @@ class ModelFitting:
         rejectiontime: Time limit of rejeciton sampling 
         fileObj:file object
         CheckConstraintFunc : The function to check for the constraints 
-    """
+        """
         if not paramList:
             if self.GetParamList():
                 paramList = self.GetParamList()
