@@ -25,9 +25,12 @@ import roadrunner
 # In[ ]:
 
 class FncOutput:    
-    """
-    The output of the oejective function
-    
+   """
+    The class to record the results of model simulation with a given set of parameters 
+    Attributes:
+        results = The simulated results of the state variables 
+        resultsEquilibrium = The simulated results of the state variables simulating toward equilibrium prior to perturbation
+        obs = The name of the state variable used as the observable
     """
     def __init__(self,
                  results=None,
@@ -50,17 +53,21 @@ class FncOutput:
     def SetObs(self,obs):
         self.obs = obs
 
-
-# In[ ]:
-
 def SimpleEval(score,threshold=1):
+    """
+    The method evaluates the score based on a given threshold and returns True if the score is below the threshold, False otherwise
+    """
     return score < threshold
 
-
-# In[ ]:
-
-# check for the criteria of the ode objective function  
 def CheckConstraints(outputResult, constraintDict):
+    """
+    The method checks if the simulated results fullfill the constraints
+    Inputs-
+        outputResult: Results of model simulation
+        constraintDict: The dictionary of constraints  
+    Output-
+        outputCheck: The output of constraint checking. True if all constraints are met and false otherwise
+    """
     if 'resultArray' in outputResult:
         result = outputResult['resultArray']
     if 'resultEquilibriumArray' in outputResult:
@@ -125,12 +132,13 @@ def SimulateODERoadRunner(xmlFile,observableName,varList,data,simulationStart,si
         x0: The initial conditions for all state variables
         simulationDuration: simulation time duration
         simulationSteps: The number of time steps for simulation
-        
-    Optional att
-    
+        equilibriumEnd: The ending time point for equilibriumEnd
+        equilibriumSteps: The number of time steps in simulating toward equilibrium
+        paramDict: The key-value pairs of parameters 
+        perturbParamDict: The key-value pairs of parameters to be perturbed
+        varInitDict: key-value pairs of state variables 
     output: 
-        variableArray: m x n numpy array of all state variables indicated in the variableList
-        variableEquilibriumArray: m xn numpy array of all state varaibles going to equilibria
+        key-value pairs of simulated results
     """
     thisFncOutput = FncOutput()
     rr = roadrunner.RoadRunner(xmlFile)
@@ -209,6 +217,14 @@ def SimulateODERoadRunner(xmlFile,observableName,varList,data,simulationStart,si
 def FncSimpleScore(data,observable,scoringFncParams,option=3):        
     """
     The scoring function takes in the single observable from the simulation that also passed the constraints tests
+    
+    Inputs-
+        data: real data
+        observable: The observable of the model to be scored against the data
+        scoringFncParams: The key-value pairs of parameters associated with fitness function   
+        option: choice of fitness function. 1 = sum of squares, 2 = sum of squares of differential, 3 = sum of 1 and 2 
+    Output-
+        fitness: The fitness score 
     """
     if 'f1scale' in scoringFncParams.keys():
         f1scale = scoringFncParams['f1scale']

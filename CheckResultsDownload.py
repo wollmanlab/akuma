@@ -121,6 +121,7 @@ while(readyFlag == False):
         print('\r')
         print('All optimizationresults have been returned')    
 # Write the output duration to file
+totalDuration = (datetime.now() - t0).total_seconds() + duration
 f = open('duration','w')
 f.write(str(totalDuration))
 f.close()
