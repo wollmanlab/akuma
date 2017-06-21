@@ -21,21 +21,21 @@ FittingData encapsulates all the data associated with the results of fitting to 
 ModelFitting encaptulates all the parameter settings of the ABC-SMC algorithm along with the the FittingData object as the results
 """
 class FittingData:
-    """
+"""
     The class to record the input data and the output to model fitting. 
-	Attributes:
-		data: time course data. The datatype should be 1D numpy ndarray
-		simulatedData: Simulated data of posteriors from all iterations of the algorithm. The data is a list and each of the list elements is the simulated data from the accepted posterior for the rejection sampling iteration. Each population of simulated data is a 2D ndarray, with rows spanning individual simulated data and the columns spanning the number of time points or dimensions of the data    
-		distributionData: The data for the fitted parameters of the accepted posteriors. The data is a list and each of the list elements is the population of the parameter vectors from the accepted posterior. Each population of parameter vectors is a 2D ndarray, with rows spanning individual parameter vectors and the columns spanning the number of dimenisons of the parameter vector.      
-		timePoints: The time points vector. The data is 1D ndarray.  
-		simID: The numerical ID for this particular FittingData object
-		referenceVec: The reference parameter vector that is used to construct the samppling range. The values for parameters in the distributionData field are in log10 scale of multiplier with respect to the reference data. 
-		scoreList: The goodness of fit for the accepted posteriors. The data is a list and each of the list elements is the population of the goodness of fit from the accepted posterior. Each population of parameter vectors is a 1D ndarray of scores.  
-		runningTimeList: The list of running time in each of the iterations of rejection sampling, in hours    
-		finalRunTime: The total running time of the sequential Monte Carlo algorithm for this instance of data fitting
-		weightList: The data for the re-sampling weights for the accepted posteriors. The data is a list and each of the list elements is the population of the re-sampling weights calculated for the accepted posterior. Each population of weights is a 1D ndarray. 
-		success: A boolean value to indicate if the algorithm successfully terminates
-    """
+    Attributes:
+        data: time course data. The datatype should be 1D numpy ndarray
+        simulatedData: Simulated data of posteriors from all iterations of the algorithm. The data is a list and each of the list elements is the simulated data from the accepted posterior for the rejection sampling iteration. Each population of simulated data is a 2D ndarray, with rows spanning individual simulated data and the columns spanning the number of time points or dimensions of the data    
+        distributionData: The data for the fitted parameters of the accepted posteriors. The data is a list and each of the list elements is the population of the parameter vectors from the accepted posterior. Each population of parameter vectors is a 2D ndarray, with rows spanning individual parameter vectors and the columns spanning the number of dimenisons of the parameter vector.      
+        timePoints: The time points vector. The data is 1D ndarray.  
+        simID: The numerical ID for this particular FittingData object
+        referenceVec: The reference parameter vector that is used to construct the samppling range. The values for parameters in the distributionData field are in log10 scale of multiplier with respect to the reference data. 
+        scoreList: The goodness of fit for the accepted posteriors. The data is a list and each of the list elements is the population of the goodness of fit from the accepted posterior. Each population of parameter vectors is a 1D ndarray of scores.  
+        runningTimeList: The list of running time in each of the iterations of rejection sampling, in hours    
+        finalRunTime: The total running time of the sequential Monte Carlo algorithm for this instance of data fitting
+        weightList: The data for the re-sampling weights for the accepted posteriors. The data is a list and each of the list elements is the population of the re-sampling weights calculated for the accepted posterior. Each population of weights is a 1D ndarray. 
+        success: A boolean value to indicate if the algorithm successfully terminates
+"""
     def __init__(self,
                  data=None,
                  simulatedData=None,
@@ -143,7 +143,7 @@ class FittingData:
         return returnDict 
         
 class ModelFitting:
-   """
+"""
     Carries out the Sequential Monte Carlo Approximate Bayesian Computation 
     Attributes:
         fittingData= The object of the FittingData class
@@ -188,7 +188,7 @@ class ModelFitting:
         constraintDict = The dictionary that has the list of initial values of state variables, list of boundaries of initial values of state variables, list of boundaries for time course of state variables, list of boundaries for time course of state variables of simulating to equilibrium prior to perturbation 
         CheckConstraintFunc = The handle of function to check for constraints in simulated data 
         ODESolveFunc = The name of the function of ODE solver
-    """
+"""
     def __init__(self,
                  fittingData= None,
                  paramList = None,
@@ -450,7 +450,7 @@ class ModelFitting:
     def SetODESolveFunc(self,ODESolveFunc):
         self.ODESolveFunc = ODESolveFunc
     def RejectionSampling(self,ODESolveFunc,fSampleFunc,fAccept,paramList=None,fScore=None,popSize=None,rejectionTime=None,fileObj=None,CheckConstraintFunc=None): 
-        """
+"""
         Perform a single iteration of rejection sampling 
         Input-
         ODESolveFunc: The ode sovler function that takes in a list of parameters and output the dictionary of results and possibly results from simulation towards initial equilibrium     
@@ -462,7 +462,7 @@ class ModelFitting:
         rejectiontime: Time limit of rejeciton sampling 
         fileObj:file object
         CheckConstraintFunc : The function to check for the constraints 
-        """
+"""
         if not paramList:
             if self.GetParamList():
                 paramList = self.GetParamList()
@@ -554,7 +554,7 @@ class ModelFitting:
         return {'success':success, 'finalSimData':finalSimData,'finalPop':finalPop,'finalScores':finalScores,'totalAttempts':totalAttempts,'finalTime':finalTime,'fileObj':fileObj}
     
     def SequentialMonteCarlo(self,**kwargs):
-        """
+    """
         Perform sequential Monte Carlo algorithm  
         Input-
         varLIst = The list of state variables as a list of strings 
@@ -584,7 +584,7 @@ class ModelFitting:
         terminationFraction = The fraction of the posterior that has to meet the final termination threshold for the iteration to be the terminating iteration of the sequential Monte Carlo algorithm
         covscaling = The covariance scaling factor of the re-sampling function 
         CheckConstraintFunc = The handle of function to check for constraints in simulated data 
-        """
+    """
         t0 = datetime.now()
         if 'varList' in kwargs:
             varList = kwargs['varList']
