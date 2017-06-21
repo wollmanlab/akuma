@@ -1,9 +1,3 @@
-
-# coding: utf-8
-
-# In[ ]:
-
-# The class is to simulate and score the 
 import numpy as np
 from datetime import *
 import json
@@ -20,9 +14,6 @@ import errno
 import os
 import signal
 import roadrunner
-
-
-# In[ ]:
 
 class FncOutput:    
    """
@@ -121,6 +112,7 @@ def CheckConstraints(outputResult, constraintDict):
         gResultEqui = [True]
     outputCheck = all(gIni+gResult+gResultEqui) 
     return outputCheck
+
 def SimulateODERoadRunner(xmlFile,observableName,varList,data,simulationStart,simulationEnd,simulationSteps,equilibriumEnd=None,equilibriumSteps=None,paramDict=None,perturbParamDict=None,varInitDict=None):
     """
     The function simulates ODE using the libroadRunner package
@@ -213,7 +205,7 @@ def SimulateODERoadRunner(xmlFile,observableName,varList,data,simulationStart,si
         return {'obs':obs,'varList':varList,'resultArray':resultArray,'resultEquilibriumArray':resultEquilibriumArray}
     else:
         return {'obs':obs,'varList':varList,'resultArray':resultArray}
-# In[ ]:
+
 def FncSimpleScore(data,observable,scoringFncParams,option=3):        
     """
     The scoring function takes in the single observable from the simulation that also passed the constraints tests
