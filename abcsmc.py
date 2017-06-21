@@ -15,9 +15,26 @@ import os
 import signal
 import roadrunner
 import simulationandscoring
+"""
+abcsmc.py includes two classes: FittingData and ModelFitting. 
+FittingData encapsulates all the data associated with the results of fitting to one single data using ABC-SMC algorithm.
+ModelFitting encaptulates all the parameter settings of the ABC-SMC algorithm along with the the FittingData object as the results
+"""
 class FittingData:
     """
-    The class to record the input data and the output to model fitting
+    The class to record the input data and the output to model fitting. 
+	Attributes:
+		data: time course data. The datatype should be 1D numpy ndarray
+		simulatedData: Simulated data of posteriors from all iterations of the algorithm. The data is a list and each of the list elements is the simulated data from the accepted posterior for the rejection sampling iteration. Each population of simulated data is a 2D ndarray, with rows spanning individual simulated data and the columns spanning the number of time points or dimensions of the data    
+		distributionData: The data for the fitted parameters of the accepted posteriors. The data is a list and each of the list elements is the population of the parameter vectors from the accepted posterior. Each population of parameter vectors is a 2D ndarray, with rows spanning individual parameter vectors and the columns spanning the number of dimenisons of the parameter vector.      
+		timePoints: The time points vector. The data is 1D ndarray.  
+		simID: The numerical ID for this particular FittingData object
+		referenceVec: The reference parameter vector that is used to construct the samppling range. The values for parameters in the distributionData field are in log10 scale of multiplier with respect to the reference data. 
+		scoreList: The goodness of fit for the accepted posteriors. The data is a list and each of the list elements is the population of the goodness of fit from the accepted posterior. Each population of parameter vectors is a 1D ndarray of scores.  
+		runningTimeList: The list of running time in each of the iterations of rejection sampling, in hours    
+		finalRunTime: The total running time of the sequential Monte Carlo algorithm for this instance of data fitting
+		weightList: The data for the re-sampling weights for the accepted posteriors. The data is a list and each of the list elements is the population of the re-sampling weights calculated for the accepted posterior. Each population of weights is a 1D ndarray. 
+		success: A boolean value to indicate if the algorithm successfully terminates
     """
     def __init__(self,
                  data=None,
@@ -126,9 +143,51 @@ class FittingData:
         return returnDict 
         
 class ModelFitting:
-    """
+   """
     Carries out the Sequential Monte Carlo Approximate Bayesian Computation 
-    
+    Attributes:
+        fittingData= The object of the FittingData class
+        paramList = The list of parameter names that need to be optimized. It is a list of strings. 
+        varList = The list of state variables as a list of strings 
+        observableName = The state variable name that is the observable and to be used to calculate the fitneess score 
+        logFileName= The name of the log file
+        previousGenPop = The parameter vector population for a previously terminated run of sequential Monte Carlo   
+        previousGenWeights= The assigned re-sampling weights for a previously terminated run of sequential Monte Carlo   
+        previousGenScores= The goodness of fit scores for a previously terminated run of sequential Monte Carlo 
+        needToGeneratePrior= a boolean flag for whether the algorithm will need to generate a prior population of parameter vectors
+        scoreFunc= The name of scoring function between the simulated data and the real data
+        scoringFncParams= The dictionary of parameters for the selected simulated data scoring function 
+        priorSampleFunc= The name of sampling function for the first prior of parameters    
+        posteriorSampleFunc= The name of re-sampling function to produce posteriors for each succession of rejection sampling
+        calculateFirstGenWeight= The name of function to calculate the re-sampling weights for the posterior of first iteration of rejection sampling
+        calculateWeightFunc= The name of function to calculate the re-sampling weights for the posterior of each succession of rejection sampling
+        firstThreshold= The threshold for termination of the first iteration of rejection sampling
+        finalThreshold= The threshold for successful termination of the final iteration of rejection sampling 
+        popSize= The size of the parameter vector population collected for each iteration of rejection sampling 
+        maxRunTime= The time limit on the running of sequential Monte Carlo algorithm 
+        option= Numerical indicator for the choice of termination threshold of sequential Monte Carlo. 1 = using a schedule of epsilon. 2 = using a schedule of alpha fraction. 3 = using a single alpha fraction
+        alpha= The fraction for relative threshold. The parameter vector will have to at least score within the top alpha fraction of the prior of the current rejection sampling iteration to be considered as part of the posterior  
+        epsilonSchedule= The schedule of epsilon threshold 
+        alphaSchedule= The schedule of alpha 
+        fEvalPreliminary= The name of the fit evaluation function for the posterior from the first iteration of rejection sampling. The function determines whether the parameter vector will be selected as part of the posterior. 
+        firstRejectionSamplingTime= The time limit for the first rejection sampling
+        terminationFraction= The fraction of the posterior that has to meet the final termination threshold for the iteration to be the terminating iteration of the sequential Monte Carlo algorithm
+        covscaling = The covariance scaling factor of the re-sampling function 
+        order = The total span of log order. If the order = 2 and the reference value of parameter is x, then the parameter is sampled from a range of [x*10^-1 , x*10]  
+        xmlFile = The name of the SBML file of the mathematical model
+        simulationStart= The starting time point of the simulation 
+        simulationEnd= The ending time point of the simulation
+        simulationSteps= The number of time point steps in the simulation 
+        equilibriumEnd= The ending time point of simulation for state variables to reach equilibrium
+        equilibriumSteps= The number of steps time points of simulation for state variables to reach equilibrium
+        perturbParamDict= The list of names for the parameters to be perturbed  
+        varInitVals = The list of initial values for state variables 
+        varsIniBoundList = The list of boundaries for the state variable initial values 
+        varsBoundList = The list of boundaries for the state variables time course values
+        varsEquilibriumBoundList = The list of boundaries for the state variables when simulating towarding initial equilibrium before perturbations
+        constraintDict = The dictionary that has the list of initial values of state variables, list of boundaries of initial values of state variables, list of boundaries for time course of state variables, list of boundaries for time course of state variables of simulating to equilibrium prior to perturbation 
+        CheckConstraintFunc = The handle of function to check for constraints in simulated data 
+        ODESolveFunc = The name of the function of ODE solver
     """
     def __init__(self,
                  fittingData= None,
@@ -393,16 +452,16 @@ class ModelFitting:
     def RejectionSampling(self,ODESolveFunc,fSampleFunc,fAccept,paramList=None,fScore=None,popSize=None,rejectionTime=None,fileObj=None,CheckConstraintFunc=None): 
         """
         Perform a single iteration of rejection sampling 
-        Attributes-
+        Input-
         ODESolveFunc: The ode sovler function that takes in a list of parameters and output the dictionary of results and possibly results from simulation towards initial equilibrium     
-        paramNum: The number of dimensions in the parameter space
-        fScore: The scoring function 
-        fSampleFunc: sampling function 
-        fAccept: function to accept the particles 
-        popSize: population size to reach
-        rejectiontime: limit on the rejeciton sampling 
+        paramNum: The number of dimensions in the parameter space 
+        fScore: The handle of scoring function 
+        fSampleFunc: The handle of sampling function 
+        fAccept: The handle of function to accept the particles 
+        popSize: The population size of the estimated posterior 
+        rejectiontime: Time limit of rejeciton sampling 
         fileObj:file object
-        CheckConstraintFunc : The function to check for the 
+        CheckConstraintFunc : The function to check for the constraints 
         """
         if not paramList:
             if self.GetParamList():
