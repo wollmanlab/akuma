@@ -15,14 +15,14 @@ import os
 import signal
 import roadrunner
 
-class FncOutput:    
-   """
+"""
     The class to record the results of model simulation with a given set of parameters 
     Attributes:
         results = The simulated results of the state variables 
         resultsEquilibrium = The simulated results of the state variables simulating toward equilibrium prior to perturbation
         obs = The name of the state variable used as the observable
-    """
+"""
+class FncOutput:    
     def __init__(self,
                  results=None,
                  resultsEquilibrium=None,
