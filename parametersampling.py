@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[ ]:
-
 import numpy as np
 from datetime import *
 import json
@@ -20,17 +15,31 @@ import os
 import signal
 import roadrunner
 
-
-# In[ ]:
-
 def SimpleSampleUniform(paramNum,order=2):
+    """
+    The method samples parameter vectors from a log uniform interval 
+    Input-
+        paramNum: The number of parameters
+        order: The span of log order of the parameers 
+    Output-
+        A parameter vector in the log range
+
+    """
     # prior sampling based on log scale
     return np.array((np.random.uniform(size = paramNum) -0.5)*order)
 
-
-# In[ ]:
-
 def MultiVariateNormalCovariateSample(paramNum,priorPop,priorWeights,covscaling,order=2):
+    """
+    The method resamples from the posterior of the previous rejection sampling and perturbs the particles by calculating the covariance of the parameters
+    Inputs-
+        paramNum: Number of parameters
+        priorPop: The parameter population of the prior rejection sampling iteration
+        priorWeights: The re-sampling weights for prior population of posterior 
+        covscaling: The covariance scaling factor 
+        order: The total span of log order 
+    Outputs-
+        returnParticlePerturbed: The re-sampled and perturbed parameter vector particle  
+    """
     arraySort = np.argsort(priorWeights)
     reverseArraySort = arraySort[::-1]
     priorWeightsSorted = [priorWeights[i] for i in reverseArraySort]
