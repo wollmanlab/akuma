@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[ ]:
-
 import numpy as np
 from datetime import *
 import json
@@ -20,10 +15,17 @@ import os
 import signal
 import roadrunner
 
-
-# In[ ]:
-
 def CalculateWeightMultiVariateNormalDensity(paramNum,currentPop,priorPop,priorWeights):
+    """
+    The function assigns the re-sampling weights of the population. The function assumes the parameter posterior follows a multivariate normal density function and assignes the weights based on the density  
+    Inputs-
+        paramNum: number of parameters
+        currentPop: The current iteration of parameter vector population. 
+        priorPop: The parameter vector population of the previous iteration of rejection sampling
+        priorWeights: The re-sampling weights of the previous iteration of rejection sampling 
+    Output-
+        newWeights: The calculated sampling weights of the current parameter vector population
+    """
     # initialie new weights
     newWeights = np.zeros(priorWeights.shape)
     for i in range(len(newWeights)):
@@ -35,10 +37,14 @@ def CalculateWeightMultiVariateNormalDensity(paramNum,currentPop,priorPop,priorW
     newWeights = newWeights/sum(newWeights)
     return newWeights
 
-
-# In[ ]:
-
 def UniformWeight(population):
+    """
+    The function assigns equal re-sampling weights to all the parameter vectors in the pouplation 
+    Input-
+    population: Populaiton of parameter vectors
+    Output-
+    returnWeights: The calculated sampling weights of the current parameter vector population 
+    """
     numberOfParticles = len(population)
     returnWeights = np.array([1/float(numberOfParticles)]*len(population))
     return returnWeights
